@@ -69,8 +69,8 @@ def opt_parse():
 	# parser.add_argument("--weight-pt",str=str,default=None,help="optional about input pre-trained, none is train from scratch")
 	parser.add_argument("--batch",type=int,default=16,help="batch size of train data")
 	parser.add_argument("--lr",type=float,default=1e-3,help="start learning rate")
-	parser.add_argument("--epoch",type=int,default=100,help="epoch train")
-	parser.add_argument("--check-point",type=int,default=50,help="each check-point time will save weight")
+	parser.add_argument("--epoch",type=int,default=10,help="epoch train")
+	parser.add_argument("--check-point",type=int,default=5,help="each check-point time will save weight")
 	return parser.parse_args()
 
 if __name__ == '__main__':

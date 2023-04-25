@@ -65,7 +65,7 @@ def opt_parse():
 	parser.add_argument("--train-lb-fol",type=str,required=True,help="path of label folder")
 	parser.add_argument("--save-fol",type=str,required=True,help="path of output weight")
 	# parser.add_argument("--weight-pt",str=str,default=None,help="optional about input pre-trained, none is train from scratch")
-	parser.add_argument("--batch",type=int,default=32,help="batch size of train data")
+	parser.add_argument("--batch",type=int,default=16,help="batch size of train data")
 	parser.add_argument("--lr",type=float,default=1e-3,help="start learning rate")
 	parser.add_argument("--epoch",type=int,default=100,help="epoch train")
 	parser.add_argument("--check-point",type=int,default=50,help="each check-point time will save weight")
@@ -78,7 +78,7 @@ if __name__ == '__main__':
 	pths_path      = args.save_fol
 	batch_size     = args.batch
 	lr             = args.lr
-	num_workers    = 4
+	num_workers    = 2
 	epoch_iter     = args.epoch
 	save_interval  = args.check_point
 	# weight	= args.weight_pt

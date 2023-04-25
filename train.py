@@ -80,7 +80,7 @@ if __name__ == '__main__':
 	pths_path      = args.save_fol
 	batch_size     = args.batch
 	lr             = args.lr
-	num_workers    = 2
+	num_workers    = 1
 	epoch_iter     = args.epoch
 	save_interval  = args.check_point
 	# weight	= args.weight_pt

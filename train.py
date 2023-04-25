@@ -8,6 +8,7 @@ from loss import Loss
 import os
 import time
 import numpy as np
+import torch.backends.cuda as tbc
 
 
 def train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers, epoch_iter, interval):
@@ -30,6 +31,7 @@ def train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers,
 	model.to(device)
 	optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 	scheduler = lr_scheduler.MultiStepLR(optimizer, milestones=[epoch_iter//2], gamma=0.1) # giam lr theo thoi gian
+	tbc.split_kernel_size = 64
 
 	for epoch in range(epoch_iter):	
 		model.train()

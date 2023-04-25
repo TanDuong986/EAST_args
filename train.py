@@ -22,7 +22,7 @@ def train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers,
 
 	if weight_pt is not None:
 		model.load_state_dict(torch.load(weight_pt))
-		
+
 	data_parallel = False
 	if torch.cuda.device_count() > 1:
 		model = nn.DataParallel(model)
@@ -64,7 +64,7 @@ def opt_parse():
 	parser.add_argument("--train-img-fol",type=str,required=True,help="path of folder image train")
 	parser.add_argument("--train-lb-fol",type=str,required=True,help="path of label folder")
 	parser.add_argument("--save-fol",type=str,required=True,help="path of output weight")
-	parser.add_argument("--weight",str=str,default=None,help="optional about pre-trained, none is train from scratch")
+	parser.add_argument("--weight-pt",str=str,default=None,help="optional about pre-trained, none is train from scratch")
 	parser.add_argument("--batch",type=int,default=32,help="batch size of train data")
 	parser.add_argument("--lr",type=float,default=1e-3,help="start learning rate")
 	parser.add_argument("--epoch",type=int,default=100,help="epoch train")
@@ -81,5 +81,6 @@ if __name__ == '__main__':
 	num_workers    = 4
 	epoch_iter     = args.epoch
 	save_interval  = args.check_point
-	train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers, epoch_iter, save_interval)	
+	weight		   = args.weight_pt
+	train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers, epoch_iter, save_interval,weight)	
 	

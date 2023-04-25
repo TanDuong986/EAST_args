@@ -10,7 +10,7 @@ import time
 import numpy as np
 
 
-def train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers, epoch_iter, interval):
+def train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers, epoch_iter, interval,weight_pt):
 	file_num = len(os.listdir(train_img_path))
 	trainset = custom_dataset(train_img_path, train_gt_path)
 	train_loader = data.DataLoader(trainset, batch_size=batch_size, \
@@ -19,13 +19,17 @@ def train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers,
 	criterion = Loss()
 	device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 	model = EAST()
+
+	if weight_pt is not None:
+		model.load_state_dict(torch.load(weight_pt))
+		
 	data_parallel = False
 	if torch.cuda.device_count() > 1:
 		model = nn.DataParallel(model)
 		data_parallel = True
 	model.to(device)
 	optimizer = torch.optim.Adam(model.parameters(), lr=lr)
-	scheduler = lr_scheduler.MultiStepLR(optimizer, milestones=[epoch_iter//2], gamma=0.1)
+	scheduler = lr_scheduler.MultiStepLR(optimizer, milestones=[epoch_iter//2], gamma=0.1) # giam lr theo thoi gian
 
 	for epoch in range(epoch_iter):	
 		model.train()
@@ -51,7 +55,7 @@ def train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers,
 		print('='*50)
 		if (epoch + 1) % interval == 0:
 			state_dict = model.module.state_dict() if data_parallel else model.state_dict()
-			torch.save(state_dict, os.path.join(pths_path, 'model_epoch_{}.pth'.format(epoch+1)))
+			torch.save(state_dict, os.path.join(pths_path, '/weight/model_epoch_{}.pth'.format(epoch+1)))
 
 import argparse
 import uuid
@@ -60,9 +64,11 @@ def opt_parse():
 	parser.add_argument("--train-img-fol",type=str,required=True,help="path of folder image train")
 	parser.add_argument("--train-lb-fol",type=str,required=True,help="path of label folder")
 	parser.add_argument("--save-fol",type=str,required=True,help="path of output weight")
+	parser.add_argument("--weight",str=str,default=None,help="optional about pre-trained, none is train from scratch")
 	parser.add_argument("--batch",type=int,default=32,help="batch size of train data")
 	parser.add_argument("--lr",type=float,default=1e-3,help="start learning rate")
 	parser.add_argument("--epoch",type=int,default=100,help="epoch train")
+	parser.add_argument("--check-point",type=int,default=50,help="each check-point time will save weight")
 	return parser.parse_args()
 
 if __name__ == '__main__':
@@ -74,6 +80,6 @@ if __name__ == '__main__':
 	lr             = args.lr
 	num_workers    = 4
 	epoch_iter     = args.epoch
-	save_interval  = 5
+	save_interval  = args.check_point
 	train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers, epoch_iter, save_interval)	
 	

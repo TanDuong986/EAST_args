@@ -150,7 +150,7 @@ def detect(img, model, device):
 def plot_boxes(img, boxes):
 	'''plot boxes on image
 	'''
-	h,_ = img.shape
+	h = img.size[0]
 	width = max(2,int(2*1e-3*h))
 	if boxes is None:
 		return img

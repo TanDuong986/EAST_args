@@ -71,6 +71,7 @@ def opt_parse():
 	parser.add_argument("--lr",type=float,default=1e-3,help="start learning rate")
 	parser.add_argument("--epoch",type=int,default=10,help="epoch train")
 	parser.add_argument("--check-point",type=int,default=5,help="each check-point time will save weight")
+	parser.add_argument("--worker",type=int,default=0,help="number of worker, the more worker, the more memory when load data")
 	return parser.parse_args()
 
 if __name__ == '__main__':
@@ -80,7 +81,7 @@ if __name__ == '__main__':
 	pths_path      = args.save_fol
 	batch_size     = args.batch
 	lr             = args.lr
-	num_workers    = 1
+	num_workers    = args.worker
 	epoch_iter     = args.epoch
 	save_interval  = args.check_point
 	# weight	= args.weight_pt

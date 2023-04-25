@@ -188,7 +188,7 @@ def opt_parse():
 	parser = argparse.ArgumentParser(description= " param for detect")
 	parser.add_argument("--img-path",type=str,required=True,help="path of image want to test")
 	parser.add_argument("--model-path",type=str,required=True,help="path of east model")
-	parser.add_argument("--out-name",type=str,default="./result/out_{}.jpeg".format(str(uuid.uuid1())),help="name of output file")
+	parser.add_argument("--out-name",type=str,default="./results/out_{}.jpeg".format(str(uuid.uuid1())),help="name of output file")
 	return parser.parse_args()
 
 if __name__ == '__main__':

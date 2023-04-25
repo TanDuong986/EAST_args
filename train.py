@@ -81,6 +81,6 @@ if __name__ == '__main__':
 	num_workers    = 4
 	epoch_iter     = args.epoch
 	save_interval  = args.check_point
-	weight		   = args.weight_pt
+	weight			= args.weight_pt
 	train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers, epoch_iter, save_interval,weight)	
 	

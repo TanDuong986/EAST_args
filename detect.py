@@ -150,12 +150,14 @@ def detect(img, model, device):
 def plot_boxes(img, boxes):
 	'''plot boxes on image
 	'''
+	h,_ = img.shape
+	width = max(2,int(2*1e-3*h))
 	if boxes is None:
 		return img
 	
 	draw = ImageDraw.Draw(img)
 	for box in boxes:
-		draw.polygon([box[0], box[1], box[2], box[3], box[4], box[5], box[6], box[7]], outline=(0,255,0))
+		draw.polygon([box[0], box[1], box[2], box[3], box[4], box[5], box[6], box[7]], outline=(0,255,0),width=width)
 	return img
 
 

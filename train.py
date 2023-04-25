@@ -55,7 +55,7 @@ def train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers,
 		print('='*50)
 		if (epoch + 1) % interval == 0:
 			state_dict = model.module.state_dict() if data_parallel else model.state_dict()
-			torch.save(state_dict, os.path.join(pths_path, './weight/model_epoch_{}.pth'.format(epoch+1)))
+			torch.save(state_dict, os.path.join(pths_path,'model_epoch_{}.pth'.format(epoch+1)))
 
 import argparse
 import uuid

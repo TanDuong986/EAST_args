@@ -389,7 +389,7 @@ class custom_dataset(data.Dataset):
 		img, vertices = crop_img(img, vertices, labels, self.length) 
 		transform = transforms.Compose([transforms.ColorJitter(0.5, 0.5, 0.5, 0.25), \
                                         transforms.ToTensor(), \
-                                        transforms.Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5))])
+                                        transforms.Normalize(mean=(0.485, 0.456, 0.406),std=(0.229, 0.224, 0.225))])
 		
 		score_map, geo_map, ignored_map = get_score_geo(img, vertices, labels, self.scale, self.length)
 		return transform(img), score_map, geo_map, ignored_map

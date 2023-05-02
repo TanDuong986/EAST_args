@@ -21,10 +21,19 @@ def train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers,
 	device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 	model = EAST()
 
+	# model.load_state_dict(torch.load('./pths/east_vgg16.pth'))
+
 	# if weight_pt is not None:
 	# 	model.load_state_dict(torch.load(weight_pt))
+	for param in model.parameters():
+		param.requires_grad = False
+	for merge_param in model.merge.parameters():
+		merge_param.requires_grad = True
+	for out_param in model.output.parameters():
+		out_param.requires_grad = True
 
 	data_parallel = False
+  
 	if torch.cuda.device_count() > 1:
 		model = nn.DataParallel(model)
 		data_parallel = True
@@ -39,6 +48,7 @@ def train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers,
 		epoch_loss = 0
 		epoch_time = time.time()
 		for i, (img, gt_score, gt_geo, ignored_map) in enumerate(train_loader):
+			print(img.shape())
 			start_time = time.time()
 			img, gt_score, gt_geo, ignored_map = img.to(device), gt_score.to(device), gt_geo.to(device), ignored_map.to(device)
 			pred_score, pred_geo = model(img)

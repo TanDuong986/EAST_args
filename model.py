@@ -167,7 +167,6 @@ class EAST(nn.Module):
 	def forward(self, x):
 		return self.output(self.merge(self.extractor(x)))
 		
-
 if __name__ == '__main__':
 	m = EAST()
 	x = torch.randn(1, 3, 256, 256)

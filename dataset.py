@@ -368,7 +368,7 @@ def extract_vertices(lines):
 
 	
 class custom_dataset(data.Dataset):
-	def __init__(self, img_path, gt_path, scale=0.25, length=256):
+	def __init__(self, img_path, gt_path, scale=0.25, length=512):
 		super(custom_dataset, self).__init__()
 		self.img_files = [os.path.join(img_path, img_file) for img_file in sorted(os.listdir(img_path))]
 		self.gt_files  = [os.path.join(gt_path, gt_file) for gt_file in sorted(os.listdir(gt_path))]
@@ -387,7 +387,7 @@ class custom_dataset(data.Dataset):
 		img, vertices = adjust_height(img, vertices) 
 		img, vertices = rotate_img(img, vertices)
 		img, vertices = crop_img(img, vertices, labels, self.length) 
-		print(f'shape of img before transform is {np.array(img).shape}') 
+		# print(f'shape of img before transform is {np.array(img).shape}') 
 		transform = transforms.Compose([transforms.ColorJitter(0.5, 0.5, 0.5, 0.25), \
                                         transforms.ToTensor(), \
                                         transforms.Normalize(mean=(0.485, 0.456, 0.406),std=(0.229, 0.224, 0.225))])

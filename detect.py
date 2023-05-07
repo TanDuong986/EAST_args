@@ -194,7 +194,7 @@ if __name__ == '__main__':
 	args = opt_parse()
 	img_path    = args.img_path
 	model_path  = args.model_path
-	res_img     = f'./results{os.path.basename(img_path)}.jpeg'
+	res_img     = f'./results/{os.path.basename(img_path)}.jpeg'
 	device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 	model = EAST().to(device)
 	model.load_state_dict(torch.load(model_path))

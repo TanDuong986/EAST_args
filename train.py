@@ -23,7 +23,7 @@ def train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers,
 	if weight == 'no_signal':
 		print('Training model from scratch')
 	else:
-		print(f'Loading pre-trained weights from pretrained')
+		print(f'Loading pre-trained weights !!! \n')
 		model.load_state_dict(torch.load(weight))
 
 	for param in model.parameters():
@@ -49,7 +49,6 @@ def train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers,
 		epoch_loss = 0
 		epoch_time = time.time()
 		for i, (img, gt_score, gt_geo, ignored_map) in enumerate(train_loader):
-			print(img.shape())
 			start_time = time.time()
 			img, gt_score, gt_geo, ignored_map = img.to(device), gt_score.to(device), gt_geo.to(device), ignored_map.to(device)
 			pred_score, pred_geo = model(img)
@@ -60,10 +59,10 @@ def train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers,
 			loss.backward()
 			optimizer.step()
 
-			print('Epoch is [{}/{}], mini-batch is [{}/{}], time consumption is {:.8f}, batch_loss is {:.8f}'.format(\
+			print('Epoch is [{}/{}], mini-batch is [{}/{}], time consumption is {:.8f}, batch_loss is {:.8f} \n'.format(\
               epoch+1, epoch_iter, i+1, int(file_num/batch_size), time.time()-start_time, loss.item()))
 		
-		print('epoch_loss is {:.8f}, epoch_time is {:.8f}'.format(epoch_loss/int(file_num/batch_size), time.time()-epoch_time))
+		print('epoch_loss is {:.8f}, epoch_time is {:.8f}\n'.format(epoch_loss/int(file_num/batch_size), time.time()-epoch_time))
 		print(time.asctime(time.localtime(time.time())))
 		print('='*50)
 		if (epoch + 1) % interval == 0:

@@ -188,14 +188,13 @@ def opt_parse():
 	parser = argparse.ArgumentParser(description= " param for detect")
 	parser.add_argument("--img-path",type=str,required=True,help="path of image want to test")
 	parser.add_argument("--model-path",type=str,required=True,help="path of east model")
-	parser.add_argument("--out-name",type=str,default="./results/out_{}.jpeg".format(str(uuid.uuid1())),help="name of output file")
 	return parser.parse_args()
 
 if __name__ == '__main__':
 	args = opt_parse()
 	img_path    = args.img_path
 	model_path  = args.model_path
-	res_img     = args.out_name
+	res_img     = f'./results{os.path.basename(img_path)}.jpeg'
 	device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 	model = EAST().to(device)
 	model.load_state_dict(torch.load(model_path))

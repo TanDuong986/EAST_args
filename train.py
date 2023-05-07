@@ -20,7 +20,10 @@ def train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers,
 	criterion = Loss()
 	device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 	model = EAST()
-	if weight != "-1":
+	if weight == 'no_signal':
+		print('Training model from scratch')
+	else:
+		print(f'Loading pre-trained weights from pretrained')
 		model.load_state_dict(torch.load(weight))
 
 	for param in model.parameters():
@@ -74,7 +77,7 @@ def opt_parse():
 	parser.add_argument("--train-img-fol",type=str,required=True,help="path of folder image train")
 	parser.add_argument("--train-lb-fol",type=str,required=True,help="path of label folder")
 	parser.add_argument("--save-fol",type=str,required=True,help="path of output weight")
-	parser.add_argument("--weight-pt",str=str,default="-1",help="optional about input pre-trained, none is train from scratch")
+	parser.add_argument("--weight-pt",str=str,default='no_signal',help="optional about input pre-trained, none is train from scratch")
 	parser.add_argument("--batch",type=int,default=16,help="batch size of train data")
 	parser.add_argument("--lr",type=float,default=1e-3,help="start learning rate")
 	parser.add_argument("--epoch",type=int,default=10,help="epoch train")

@@ -11,7 +11,7 @@ import numpy as np
 import torch.backends.cuda as tbc
 
 
-def train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers, epoch_iter, interval):
+def train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers, epoch_iter, interval,weight):
 	file_num = len(os.listdir(train_img_path))
 	trainset = custom_dataset(train_img_path, train_gt_path)
 	train_loader = data.DataLoader(trainset, batch_size=batch_size, \
@@ -20,11 +20,9 @@ def train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers,
 	criterion = Loss()
 	device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 	model = EAST()
+	if weight != "-1":
+		model.load_state_dict(torch.load(weight))
 
-	# model.load_state_dict(torch.load('./pths/east_vgg16.pth'))
-
-	# if weight_pt is not None:
-	# 	model.load_state_dict(torch.load(weight_pt))
 	for param in model.parameters():
 		param.requires_grad = False
 	for merge_param in model.merge.parameters():
@@ -76,7 +74,7 @@ def opt_parse():
 	parser.add_argument("--train-img-fol",type=str,required=True,help="path of folder image train")
 	parser.add_argument("--train-lb-fol",type=str,required=True,help="path of label folder")
 	parser.add_argument("--save-fol",type=str,required=True,help="path of output weight")
-	# parser.add_argument("--weight-pt",str=str,default=None,help="optional about input pre-trained, none is train from scratch")
+	parser.add_argument("--weight-pt",str=str,default="-1",help="optional about input pre-trained, none is train from scratch")
 	parser.add_argument("--batch",type=int,default=16,help="batch size of train data")
 	parser.add_argument("--lr",type=float,default=1e-3,help="start learning rate")
 	parser.add_argument("--epoch",type=int,default=10,help="epoch train")
@@ -94,6 +92,6 @@ if __name__ == '__main__':
 	num_workers    = args.worker
 	epoch_iter     = args.epoch
 	save_interval  = args.check_point
-	# weight	= args.weight_pt
-	train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers, epoch_iter, save_interval)	
+	weight	= args.weight_pt
+	train(train_img_path, train_gt_path, pths_path, batch_size, lr, num_workers, epoch_iter, save_interval,weight)	
 	

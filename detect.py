@@ -199,7 +199,7 @@ if __name__ == '__main__':
 	model = EAST().to(device)
 	model.load_state_dict(torch.load(model_path))
 	model.eval()
-	img = Image.open(img_path)
+	img = Image.open(img_path).convert('RGB')
 	
 	boxes = detect(img, model, device)
 	plot_img = plot_boxes(img, boxes)	
